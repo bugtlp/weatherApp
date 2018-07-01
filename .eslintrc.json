@@ -1,0 +1,9 @@
+{
+    "parser": "babel-eslint",
+    "extends": "airbnb",
+    "rules": {
+      "import/no-unresolved": ["off", "never"],
+      "jsx-a11y/no-static-element-interactions": ["off", "never"],
+      "jsx-a11y/click-events-have-key-events": ["off", "never"]
+    }
+}

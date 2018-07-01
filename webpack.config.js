@@ -1,27 +1,54 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+
+const webpack = require('webpack');
+
+const isProduction = process.env.NODE_ENV === 'production';
+const context = path.resolve(process.cwd(), 'src');
+const outPutPath = path.resolve(process.cwd(), 'dist');
 
 module.exports = {
-  devtool: 'eval',
+  devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
   entry: [
-    './src/index'
+    './src/index',
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: outPutPath,
     filename: 'bundle.js',
-    publicPath: '/static/'
+    publicPath: '/static/',
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
   ],
   resolve: {
-    extensions: ['.js', '.jsx']
+    modules: [
+      context,
+      'node_modules',
+    ],
+    extensions: ['.js', '.jsx', '.json'],
   },
   module: {
-    rules: [{
-      test: /\.jsx?$/,
-      use: ['babel-loader'],
-      include: path.join(__dirname, 'src')
-    }]
-  }
+    rules: [
+      {
+        test: /\.jsx?$/,
+        use: ['babel-loader'],
+        include: context,
+      },
+      {
+        test: /\.css/,
+        include: context,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              localIdentName: '[name]-[local]-[hash:base64:5]',
+              modules: true,
+              sourceMap: !isProduction,
+              minimize: isProduction,
+            },
+          },
+        ],
+      },
+    ],
+  },
 };

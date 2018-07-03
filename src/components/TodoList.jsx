@@ -21,6 +21,7 @@ class TodoList extends Component {
   };
 
   render() {
+    const { store } = this.props;
     return (
       <div>
         <form onSubmit={this.handleFormSubmit}>
@@ -36,7 +37,7 @@ class TodoList extends Component {
         </form>
         <hr />
         <WeatherWidget
-          store={{ placeName: 'Краснодар', temperature: 24, description: 'солнечно' }}
+          store={store}
         />
       </div>
     );

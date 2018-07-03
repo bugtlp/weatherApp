@@ -2,6 +2,10 @@ const path = require('path');
 
 const webpack = require('webpack');
 
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 const isProduction = process.env.NODE_ENV === 'production';
 const context = path.resolve(process.cwd(), 'src');
 const outPutPath = path.resolve(process.cwd(), 'dist');
@@ -18,6 +22,9 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      WEATHER_API_KEY: JSON.stringify(process.env.WEATHER_API_KEY),
+    }),
   ],
   resolve: {
     modules: [

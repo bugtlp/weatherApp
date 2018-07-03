@@ -11,5 +11,12 @@
 
 .cityList > div:hover {
   background-color: #6B86A6;
+  opacity: 0.5;
+  color: white;
+}
+
+.selected {
+  background-color: #6B86A6 !important;
+  opacity: 0.5;
   color: white;
 }

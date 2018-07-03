@@ -57,7 +57,7 @@ class CityList extends Component {
 
   render() {
     const { onDelete, onSelect } = this;
-    const { cityNames } = this.store;
+    const { cityNames, selectedCity } = this.store;
     return (
       <div>
         <form onSubmit={this.onSubmit}>
@@ -73,7 +73,11 @@ class CityList extends Component {
         </form>
         <div className={css.cityList}>
           {cityNames.map(city => (
-            <div key={city} data-name={city}>
+            <div
+              key={city}
+              data-name={city}
+              className={city === selectedCity && css.selected}
+            >
               <span onClick={onSelect}>
                 {city}
               </span>

@@ -1,0 +1,30 @@
+
+.wrapper {
+  background-color: #6B86A6;
+  opacity: 0.5;
+  width: 50%;
+  height: 30%;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr;
+}
+
+.wrapper > div {
+  color: white;
+  font-size: 24pt;
+}
+
+.desciption {
+  color: white;
+  font-size: 16pt;
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+}
+
+.sun {
+  background-image: url(/public/icons/weather/wi_color_clear_day.png);
+}

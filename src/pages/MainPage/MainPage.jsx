@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
 
 import TodoList from 'components/TodoList';
-import TodoListModel from 'models/TodoListModel';
-// import TodoModel from 'models/TodoModel';
+
+import WeatherForecastStore from 'stores/WeatherForecastStore';
 
 export class MainPage extends Component {
-  // static propTypes = {
-  //   prop: PropTypes
-  // }
-
   componentWillMount() {
-    this.store = new TodoListModel();
+    this.store = new WeatherForecastStore({ name: 'London' });
   }
 
   componentDidMount() {
     const { store } = this;
-    store.addTodo('Get Coffee');
-    store.addTodo('Write simpler code');
-    store.todos[0].finished = true;
+    // TODO: код инициализации городов по умолчанию
   }
 
   render() {

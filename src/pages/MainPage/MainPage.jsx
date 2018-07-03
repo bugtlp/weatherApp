@@ -9,37 +9,50 @@ import PropTypes from 'prop-types';
 import CityList from 'components/CityList';
 import WeatherWidget from 'components/WeatherWidget';
 
-import WeatherForecastStore from 'stores/WeatherForecastStore';
-import service from 'services/weatherService';
-
-@inject('cities')
+@inject('citiesStore', 'weatherStore', 'services')
 @observer
 export class MainPage extends Component {
   static propTypes = {
-    cities: PropTypes.shape({
+    citiesStore: PropTypes.shape({
       cityNames: MobxPropTypes.arrayOrObservableArrayOf(PropTypes.string),
+      load: PropTypes.func,
+    }).isRequired,
+    weatherStore: PropTypes.shape({
+      load: PropTypes.func,
+    }).isRequired,
+    services: PropTypes.shape({
+      geo: PropTypes.shape({}),
+      weather: PropTypes.shape({}),
     }).isRequired,
   }
 
   componentWillMount() {
-    this.weatherStore = new WeatherForecastStore({ name: 'London' }, {
-      fetch: service.getForecast,
-    });
   }
 
   componentDidMount() {
-    const { cities } = this.props;
-    cities.load();
+    const {
+      citiesStore,
+      weatherStore,
+      services: { geo: geoService },
+    } = this.props;
+    citiesStore.load();
+    geoService.getCurrentPosition()
+      .then((coords) => {
+        weatherStore.load({
+          lat: coords.latitude,
+          lon: coords.longitude,
+        });
+      });
   }
 
   render() {
-    const { cities } = this.props;
+    const { citiesStore, weatherStore } = this.props;
     return (
       <div>
-        <CityList store={cities} />
+        <CityList store={citiesStore} />
         <hr />
         <WeatherWidget
-          store={this.weatherStore}
+          store={weatherStore}
         />
       </div>
     );

@@ -34,15 +34,14 @@ export default class WeatherForecastStore {
     return this.data.get('weatherDescr');
   }
 
-  constructor({ name, lat, lon }, weatherApi) {
-    Object.assign(this.place, { name, lat, lon });
+  constructor(weatherApi) {
     this.weatherApi = weatherApi;
   }
 
   @action
-  load() {
+  load(place) {
     this.pending = true;
-    return this.weatherApi.fetch(this.place)
+    return this.weatherApi.fetch(place) // { name, lat, lon }
       .then(action((data) => {
         this.data.replace(data);
         this.pending = false;

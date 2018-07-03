@@ -7,9 +7,6 @@ import {
 import { observable, action } from 'mobx';
 import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
 
-import WeatherStore from 'stores/WeatherForecastStore';
-import service from 'services/weatherService';
-
 import css from './CityList.css';
 
 @observer

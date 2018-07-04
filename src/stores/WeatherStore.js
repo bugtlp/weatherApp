@@ -50,6 +50,7 @@ export default class WeatherForecastStore {
    */
   @action
   load(place) {
+    this.setPlace(place);
     this.pending = true;
     return this.weatherApi.fetch(place) // { name, lat, lon }
       .then(action((data) => {
@@ -61,5 +62,23 @@ export default class WeatherForecastStore {
   @action
   toggleMode() {
     this.mode = this.mode === 'C' ? 'F' : 'C';
+  }
+
+  /**
+   * Setting place without loading data
+   * @param {object} place
+   * @param {number} place.lat
+   * @param {number} place.lon
+   * @param {string} place.name
+   * @returns {void}
+   */
+  @action
+  setPlace(place) {
+    Object.assign(this.place, {
+      name: '',
+      lat: null,
+      lon: null,
+    });
+    Object.assign(this.place, place);
   }
 }

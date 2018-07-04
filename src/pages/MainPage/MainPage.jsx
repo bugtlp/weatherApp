@@ -4,6 +4,7 @@ import {
   observer,
   PropTypes as MobxPropTypes,
 } from 'mobx-react';
+import { reaction } from 'mobx';
 import PropTypes from 'prop-types';
 
 import CityList from 'components/CityList';
@@ -16,6 +17,7 @@ export class MainPage extends Component {
     citiesStore: PropTypes.shape({
       cityNames: MobxPropTypes.arrayOrObservableArrayOf(PropTypes.string),
       load: PropTypes.func,
+      selectedCity: PropTypes.string,
     }).isRequired,
     weatherStore: PropTypes.shape({
       load: PropTypes.func,
@@ -24,9 +26,6 @@ export class MainPage extends Component {
       geo: PropTypes.shape({}),
       weather: PropTypes.shape({}),
     }).isRequired,
-  }
-
-  componentWillMount() {
   }
 
   componentDidMount() {
@@ -43,6 +42,18 @@ export class MainPage extends Component {
           lon: coords.longitude,
         });
       });
+    this.weatherReaction = reaction(
+      () => citiesStore.selectedCity,
+      (cityName) => {
+        weatherStore.load({ name: cityName });
+      },
+    );
+  }
+
+  componentWillUnmount() {
+    if (typeof this.weatherReaction === 'function') {
+      this.weatherReaction();
+    }
   }
 
   render() {

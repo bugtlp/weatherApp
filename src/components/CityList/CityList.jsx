@@ -57,7 +57,7 @@ class CityList extends Component {
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          Новый город:
+          Город:
           <input
             type="text"
             value={this.cityName}

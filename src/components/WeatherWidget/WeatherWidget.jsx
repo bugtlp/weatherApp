@@ -35,7 +35,7 @@ const DESCRIPTION_TO_ICON = {
   'Ice pellets': 'hail',
   Overcast: 'cloudy',
   Cloudy: 'cloudy',
-  'Partly Cloudy': 'party-cloudy',
+  'Partly cloudy': 'party-cloudy',
 };
 
 @observer
@@ -99,7 +99,7 @@ export class WeatherWidget extends Component {
     return (
       <div className={css.wrapper}>
         <div className={css.place}>
-          {placeName || 'Мое местоположение'}
+          {placeName}
         </div>
         <div onClick={this.onTempClick} onKeyPress={this.onTempClick} style={{ paddingTop: '40px' }}>
           {temperature}

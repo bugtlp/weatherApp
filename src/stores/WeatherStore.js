@@ -18,6 +18,8 @@ export default class WeatherForecastStore {
 
   @observable pending = false;
 
+  @observable error = null;
+
   @computed
   get placeName() {
     return this.place.name;
@@ -51,10 +53,14 @@ export default class WeatherForecastStore {
   @action
   load(place) {
     this.setPlace(place);
+    this.error = null;
     this.pending = true;
     return this.weatherApi.fetch(place) // { name, lat, lon }
       .then(action((data) => {
         this.data.replace(data);
+        this.pending = false;
+      }), action((error) => {
+        this.error = error;
         this.pending = false;
       }));
   }

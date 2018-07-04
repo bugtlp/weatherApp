@@ -35,6 +35,11 @@
   height: 64px;
 }
 
+.alert {
+  background-image: url(/public/icons/weather_alert.png);
+  background-size: 64px 64px;
+}
+
 .clear-day {
   background-image: url(/public/icons/weather/wi_color_clear_day.png);
 }

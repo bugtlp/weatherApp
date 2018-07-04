@@ -54,10 +54,6 @@ export class WeatherWidget extends Component {
     this.store = store;
   }
 
-  onDelete = () => {
-    console.log('delete city');
-  }
-
   onTempClick = () => {
     this.store.toggleMode();
   }
@@ -73,6 +69,7 @@ export class WeatherWidget extends Component {
       temperature,
       description,
       pending,
+      error,
     } = this.store;
 
     if (pending) {
@@ -80,6 +77,20 @@ export class WeatherWidget extends Component {
         <div className={css.wrapper}>
           <div className={css.spinner}>
             Загрузка...
+          </div>
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className={css.wrapper}>
+          <div className={css.spinner}>
+            Ошибка!
+          </div>
+          <div />
+          <div style={{ paddingTop: '30px' }}>
+            <div className={`${css.icon} ${css.alert}`} />
           </div>
         </div>
       );

@@ -5,7 +5,7 @@ class Service {
   lang = 'ru';
 
   getForecast = ({ name, lat, lon }) => {
-    const q = name || `${lat},${lon}`;
+    const q = (lat && lon && `${lat},${lon}`) || name;
     const params = new URLSearchParams();
     params.set('q', q);
     params.set('key', WEATHER_API_KEY);
@@ -15,7 +15,10 @@ class Service {
 
     return fetch(`${this.apiUrl}?${params.toString()}`)
       .then(response => response.json())
-      .then(({ data: { current_condition: conditions } }) => {
+      .then(({ data: { current_condition: conditions, error } }) => {
+        if (error && error[0]) {
+          throw new Error(error[0].msg);
+        }
         const condition = conditions && conditions[0];
         const weatherDesc = condition.weatherDesc
           && condition.weatherDesc[0]

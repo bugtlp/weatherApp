@@ -25,6 +25,16 @@ export default class CitiesStore {
     if (index !== -1) {
       this.cityNames.splice(index, 1);
     }
+    const arr = this.cityNames.slice();
+    if (this.selectedCity === cityName) {
+      if (arr[index]) {
+        this.selectedCity = arr[index];
+      } else if (arr[index - 1]) {
+        this.selectedCity = arr[index - 1];
+      } else {
+        this.selectedCity = '';
+      }
+    }
     this.save();
   }
 

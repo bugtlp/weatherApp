@@ -13,6 +13,8 @@ import WeatherWidget from 'components/WeatherWidget';
 @inject('citiesStore', 'weatherStore', 'services')
 @observer
 export class MainPage extends Component {
+  myPlace = null;
+
   static propTypes = {
     citiesStore: PropTypes.shape({
       cityNames: MobxPropTypes.arrayOrObservableArrayOf(PropTypes.string),
@@ -37,15 +39,21 @@ export class MainPage extends Component {
     citiesStore.load();
     geoService.getCurrentPosition()
       .then((coords) => {
-        weatherStore.load({
+        this.myPlace = {
+          name: 'Мое местоположение',
           lat: coords.latitude,
           lon: coords.longitude,
-        });
+        };
+        weatherStore.load(this.myPlace);
       });
     this.weatherReaction = reaction(
       () => citiesStore.selectedCity,
       (cityName) => {
-        weatherStore.load({ name: cityName });
+        let place = { name: cityName };
+        if (!cityName && this.myPlace) {
+          place = this.myPlace;
+        }
+        weatherStore.load(place);
       },
     );
   }

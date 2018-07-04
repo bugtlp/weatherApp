@@ -1,4 +1,4 @@
-
+/* global navigator */
 const service = {
   getCurrentPosition() {
     return new Promise((resolve, reject) => {

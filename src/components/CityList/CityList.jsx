@@ -34,10 +34,9 @@ class CityList extends Component {
   @action
   onSubmit = (e) => {
     e.preventDefault();
-    this.store.addCity(this.cityName);
-    // const store = new WeatherStore({ name: this.cityName }, {
-    //   fetch: service.getForecast,
-    // });
+    if (this.cityName) {
+      this.store.addCity(this.cityName);
+    }
     this.cityName = '';
   };
 
@@ -64,7 +63,7 @@ class CityList extends Component {
             value={this.cityName}
             onChange={this.onInputChange}
           />
-          <button type="submit">
+          <button type="submit" disabled={this.cityName === ''}>
             Добавить
           </button>
         </form>

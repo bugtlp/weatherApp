@@ -4,16 +4,20 @@ import {
   observer,
   PropTypes as MobxPropTypes,
 } from 'mobx-react';
-import { reaction } from 'mobx';
+import { reaction, observable, runInAction } from 'mobx';
 import PropTypes from 'prop-types';
 
 import CityList from 'components/CityList';
 import WeatherWidget from 'components/WeatherWidget';
 
+import css from './MainPage.css';
+
 @inject('citiesStore', 'weatherStore', 'services')
 @observer
 export class MainPage extends Component {
   myPlace = null;
+
+  @observable pending = false;
 
   static propTypes = {
     citiesStore: PropTypes.shape({
@@ -36,6 +40,7 @@ export class MainPage extends Component {
       weatherStore,
       services: { geo: geoService },
     } = this.props;
+    runInAction(() => { this.pending = true; });
     citiesStore.load();
     geoService.getCurrentPosition()
       .then((coords) => {
@@ -44,7 +49,10 @@ export class MainPage extends Component {
           lat: coords.latitude,
           lon: coords.longitude,
         };
-        weatherStore.load(this.myPlace);
+        weatherStore.load(this.myPlace)
+          .finally(() => {
+            runInAction(() => { this.pending = false; });
+          });
       });
     this.weatherReaction = reaction(
       () => citiesStore.selectedCity,
@@ -66,6 +74,15 @@ export class MainPage extends Component {
 
   render() {
     const { citiesStore, weatherStore } = this.props;
+    const { pending } = this;
+    if (pending) {
+      return (
+        <div className={css.spinner}>
+          Загрузка...
+        </div>
+      );
+    }
+
     return (
       <div>
         <CityList store={citiesStore} />

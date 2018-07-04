@@ -72,8 +72,19 @@ export class WeatherWidget extends Component {
       placeName,
       temperature,
       description,
+      pending,
     } = this.store;
-    /* eslint-disable jsx-a11y/no-static-element-interactions */
+
+    if (pending) {
+      return (
+        <div className={css.wrapper}>
+          <div className={css.spinner}>
+            Загрузка...
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className={css.wrapper}>
         <div className={css.place}>

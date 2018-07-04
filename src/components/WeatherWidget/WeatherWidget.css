@@ -4,6 +4,7 @@
   opacity: 0.5;
   width: 50%;
   height: 30%;
+  border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   display: grid;

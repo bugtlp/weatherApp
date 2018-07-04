@@ -12,7 +12,8 @@ export default class WeatherForecastStore {
   @observable data = observable.map([
     ['temp_C', '0'],
     ['temp_F', '0'],
-    ['weatherDescr', ''],
+    ['weatherDesc', ''],
+    ['weatherDescLang', ''],
   ]);
 
   @observable pending = false;
@@ -31,13 +32,22 @@ export default class WeatherForecastStore {
 
   @computed
   get description() {
-    return this.data.get('weatherDescr');
+    return this.data.get('weatherDescLang')
+      || this.data.get('weatherDesc');
   }
 
   constructor(weatherApi) {
     this.weatherApi = weatherApi;
   }
 
+  /**
+   * Loading weather by city name or coordinates
+   * @param {object} place
+   * @param {number} place.lat
+   * @param {number} place.lon
+   * @param {string} place.name
+   * @returns {Promise}
+   */
   @action
   load(place) {
     this.pending = true;

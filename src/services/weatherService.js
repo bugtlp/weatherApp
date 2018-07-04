@@ -17,17 +17,17 @@ class Service {
       .then(response => response.json())
       .then(({ data: { current_condition: conditions } }) => {
         const condition = conditions && conditions[0];
-        let weatherDescr = condition.weatherDescr
-          && condition.weatherDescr[0]
-          && condition.weatherDescr[0].value;
-        if (condition[`lang_${this.lang}`]) {
-          weatherDescr = condition[`lang_${this.lang}`][0].value;
-        }
+        const weatherDesc = condition.weatherDesc
+          && condition.weatherDesc[0]
+          && condition.weatherDesc[0].value;
+        const weatherDescLang = condition[`lang_${this.lang}`]
+          && condition[`lang_${this.lang}`][0]
+          && condition[`lang_${this.lang}`][0].value;
         return {
           temp_C: condition.temp_C,
           temp_F: condition.temp_F,
-          weatherDescr,
-          weatherCode: condition.weatherCode,
+          weatherDesc,
+          weatherDescLang,
         };
       });
   }

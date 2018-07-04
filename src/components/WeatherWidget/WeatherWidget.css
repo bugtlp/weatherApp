@@ -15,9 +15,14 @@
   font-size: 24pt;
 }
 
-.desciption {
+.place {
+  padding: 40px 0 0 20px;
+}
+
+.description {
   color: white;
-  font-size: 16pt;
+  font-size: 16pt !important;
+  padding-left: 30px;
 }
 
 .icon {
@@ -25,6 +30,38 @@
   height: 64px;
 }
 
-.sun {
+.clear-day {
   background-image: url(/public/icons/weather/wi_color_clear_day.png);
+}
+
+.sunny {
+  background-image: url(/public/icons/weather/wi_color_sunny.png);
+}
+
+.snow {
+  background-image: url(/public/icons/weather/wi_color_snow.png);
+}
+
+.rain-thunder {
+  background-image: url(/public/icons/weather/wi_color_thunder.png);
+}
+
+.rain {
+  background-image: url(/public/icons/weather/wi_color_rain.png);
+}
+
+.hail {
+  background-image: url(/public/icons/weather/wi_color_hail.png);
+}
+
+.drizzle {
+  background-image: url(/public/icons/weather/wi_color_drizzle.png);
+}
+
+.cloudy {
+  background-image: url(/public/icons/weather/wi_color_cloudy.png);
+}
+
+.party-cloudy {
+  background-image: url(/public/icons/weather/wi_color_partly_cloudy_day.png);
 }

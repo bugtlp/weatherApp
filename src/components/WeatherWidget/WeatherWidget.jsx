@@ -7,6 +7,37 @@ import {
 import { observer } from 'mobx-react';
 import css from './WeatherWidget.css';
 
+const DESCRIPTION_TO_ICON = {
+  Clear: 'clear-day',
+  Sunny: 'sunny',
+  'Moderate or heavy snow in area with thunder': 'snow',
+  'Patchy light snow in area with thunder': 'snow',
+  'Moderate or heavy snow showers': 'snow',
+  'Light snow showers': 'snow',
+  'Heavy snow': 'snow',
+  'Patchy heavy snow': 'snow',
+  'Moderate snow': 'snow',
+  'Patchy moderate snow': 'snow',
+  'Moderate or heavy rain in area with thunder': 'rain-thunder',
+  'Patchy light rain in area with thunder': 'rain-thunder',
+  'Heavy rain': 'rain',
+  'Heavy rain at times': 'rain',
+  'Moderate rain': 'rain',
+  'Moderate rain at times': 'rain',
+  'Light rain': 'rain',
+  'Patchy light rain': 'rain',
+  'Heavy freezing drizzle': 'drizzle',
+  'Freezing drizzle': 'drizzle',
+  'Light drizzle': 'drizzle',
+  'Patchy light drizzle': 'drizzle',
+  'Moderate or heavy showers of ice pellets': 'hail',
+  'Light showers of ice pellets': 'hail',
+  'Ice pellets': 'hail',
+  Overcast: 'cloudy',
+  Cloudy: 'cloudy',
+  'Partly Cloudy': 'party-cloudy',
+};
+
 @observer
 export class WeatherWidget extends Component {
   static propTypes = {
@@ -31,6 +62,11 @@ export class WeatherWidget extends Component {
     this.store.toggleMode();
   }
 
+  renderIconStyle() {
+    const { data } = this.store;
+    return DESCRIPTION_TO_ICON[data.get('weatherDesc')];
+  }
+
   render() {
     const {
       placeName,
@@ -40,14 +76,14 @@ export class WeatherWidget extends Component {
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
       <div className={css.wrapper}>
-        <div>
-          {placeName}
+        <div className={css.place}>
+          {placeName || 'Мое местоположение'}
         </div>
-        <div onClick={this.onTempClick} onKeyPress={this.onTempClick}>
+        <div onClick={this.onTempClick} onKeyPress={this.onTempClick} style={{ paddingTop: '40px' }}>
           {temperature}
         </div>
-        <div>
-          <div className={`${css.icon} ${css.sun}`} />
+        <div style={{ paddingTop: '30px' }}>
+          <div className={`${css.icon} ${css[this.renderIconStyle()]}`} />
         </div>
         <div className={css.description}>
           {description}

@@ -4,7 +4,7 @@ import {
   observer,
   PropTypes as MobxPropTypes,
 } from 'mobx-react';
-import { reaction, observable, runInAction } from 'mobx';
+import { reaction, observable, action } from 'mobx';
 import PropTypes from 'prop-types';
 
 import CityList from 'components/CityList';
@@ -15,7 +15,7 @@ import css from './MainPage.css';
 @inject('citiesStore', 'weatherStore', 'services')
 @observer
 export class MainPage extends Component {
-  myPlace = null;
+  @observable myPlace = null;
 
   @observable pending = false;
 
@@ -34,26 +34,28 @@ export class MainPage extends Component {
     }).isRequired,
   }
 
+  @action
   componentDidMount() {
     const {
       citiesStore,
       weatherStore,
       services: { geo: geoService },
     } = this.props;
-    runInAction(() => { this.pending = true; });
+    this.pending = true;
     citiesStore.load();
     geoService.getCurrentPosition()
-      .then((coords) => {
+      .then(action((coords) => {
         this.myPlace = {
           name: 'Мое местоположение',
           lat: coords.latitude,
           lon: coords.longitude,
         };
-        weatherStore.load(this.myPlace)
-          .finally(() => {
-            runInAction(() => { this.pending = false; });
-          });
-      });
+        return weatherStore.load(this.myPlace);
+      }))
+      .then(
+        action(() => { this.pending = false; }),
+        action(() => { this.pending = false; }),
+      );
     this.weatherReaction = reaction(
       () => citiesStore.selectedCity,
       (cityName) => {
@@ -74,7 +76,7 @@ export class MainPage extends Component {
 
   render() {
     const { citiesStore, weatherStore } = this.props;
-    const { pending } = this;
+    const { pending, myPlace } = this;
     if (pending) {
       return (
         <div className={css.spinner}>
@@ -87,9 +89,12 @@ export class MainPage extends Component {
       <div>
         <CityList store={citiesStore} />
         <hr />
-        <WeatherWidget
-          store={weatherStore}
-        />
+        {(myPlace || weatherStore.placeName)
+          && (
+            <WeatherWidget
+              store={weatherStore}
+            />
+          )}
       </div>
     );
   }
